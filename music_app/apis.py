@@ -13,7 +13,6 @@ from django.core.exceptions import PermissionDenied
 class TrackViewset(viewsets.ModelViewSet):
 	model = Tracks
 	serializer_class = GetTrackListSerializer
-	# queryset = Tracks.objects.all()
 
 	def get_serializer_class(self):
 		serializer_action_classes = {
@@ -24,9 +23,15 @@ class TrackViewset(viewsets.ModelViewSet):
 		    return serializer_action_classes.get(self.action, self.serializer_class)
 		return self.serializer_class
 
+
 	def get_queryset(self):
 		queryset = self.model.objects.all()
-		return queryset
+		try:
+			title = self.request.query_params.get('title')
+			queryset = queryset.filter(track_name = title)
+			return queryset
+		except:
+			return queryset
 
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
@@ -84,12 +89,6 @@ class UpdateRetrieveTrack(viewsets.ModelViewSet):
 			if serializer.is_valid():
 				request_data = serializer.data
 				tracks.update(**request_data)
-				# data_keys = request_data.keys()
-				# book = track[0]
-				# for i in data_keys:
-				# 	book[i] = request_data[i]
-				# book.save()
-
 				return Response(serializer.data)
 		else:
 			error = {
@@ -102,7 +101,7 @@ class UpdateRetrieveTrack(viewsets.ModelViewSet):
 class GenreViewSet(viewsets.ModelViewSet):
 	model = Genres
 	serializer_class = GetGenreListSerializer
-	# queryset = Genres.objects.all()
+	queryset = Genres.objects.all()
 
 	def get_serializer_class(self):
 		serializer_action_classes = {
@@ -113,10 +112,6 @@ class GenreViewSet(viewsets.ModelViewSet):
 		    return serializer_action_classes.get(self.action, self.serializer_class)
 		return self.serializer_class
 
-	def get_queryset(self):
-		queryset = self.model.objects.all()
-		return queryset
-
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		if serializer.is_valid():
@@ -125,7 +120,7 @@ class GenreViewSet(viewsets.ModelViewSet):
 		return Response(serializer.errors)
 
 	def list(self, request, *args, **kwargs):
-		queryset = self.get_queryset()
+		queryset = self.queryset
 		page = self.paginate_queryset(queryset)
 		if page is not None:
 			serialize = self.get_serializer(queryset, many=True)
