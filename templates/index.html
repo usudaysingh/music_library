@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html style="height: 100%;">
+<head>
+  <title>Music Library</title>
+  {% block js %}
+  <script src="{{STATIC_URL}}js/jquery.min.js"></script>
+  <script src="{{STATIC_URL}}js/bootstrap3.3.7.min.js"></script>
+  <script src="{{STATIC_URL}}js/jquery.datetimepicker.full.min.js"></script>
+  <script src="{{STATIC_URL}}js/jquery-ui.min.js"></script>
+  {% endblock %}
+
+  {% block css %}
+  <link rel="stylesheet" href="{{STATIC_URL}}css/bootstrap3.3.7.min.css">
+  <link rel="stylesheet" href="{{STATIC_URL}}css/jquery.datetimepicker.min.css" />
+  <link rel="stylesheet" href="{{STATIC_URL}}css/jquery-ui.css" />
+  <link rel="stylesheet" href="{{STATIC_URL}}css/music_library.css" />
+  {% endblock %}
+</head>
+<body style="height: 100%;">
+  {% block content %}
+  {% endblock %}
+</body>
+<script type="text/javascript">
+  $(document).ready(function () {
+
+      $('#search_song_form').submit(function(){
+        event.preventDefault();
+        searchBook();
+      });
+  }); //document
+</script>
+</html>
