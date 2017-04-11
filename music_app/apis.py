@@ -26,12 +26,11 @@ class TrackViewset(viewsets.ModelViewSet):
 
 	def get_queryset(self):
 		queryset = self.model.objects.all()
-		try:
-			title = self.request.query_params.get('title')
+		title = self.request.query_params.get('title')
+		if title:
 			queryset = queryset.filter(track_name = title)
 			return queryset
-		except:
-			return queryset
+		return queryset
 
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
