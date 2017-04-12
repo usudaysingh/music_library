@@ -1,0 +1,104 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="home_page">
+	<div class="box" style="margin-top: 10%; position: absolute; margin-left: 20%; background-color: white; border-radius: 20px; padding: 10px;">
+            <div class="box-header with-border">
+              <h3 class="box-title">Genres</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <table id="genre_table" class="display compact" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>type</th>
+                    </tr>
+                    </thead>
+                </table>
+          </div>
+    </div>
+    <div class="modal fade" id="add_genre_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <div class="modal-header">
+	                <button type="button" class="close" 
+	                   data-dismiss="modal">
+	                       <span aria-hidden="true">&times;</span>
+	                       <span class="sr-only">Close</span>
+	                </button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Add Track
+	                </h4>
+	            </div>
+            
+	            <!-- Modal Body -->
+	            <div class="modal-body">
+		                <form class="form-horizontal" role="form" id="add_genre_form">
+		                  <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="genrename" >Genre Name</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="genrename" placeholder="Genre Name here"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="genretype" >Genre Type</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="genretype" placeholder="Genre Type here"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <div class="col-sm-offset-2 col-sm-10">
+		                      <button type="submit" class="btn btn-default">Add Genre</button>
+		                    </div>
+		                  </div>
+		                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div><!-- /. Modal -->
+</div><!--home page-->
+<script type="text/javascript" src="{{STATIC_URL}}js/music_library.js"></script>
+<script type="text/javascript">
+	 $('#genre_table').dataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'pageLength',
+            {
+                extend: 'colvis',
+                columns: ':not(:nth-child(1))'
+            },
+            {
+                extend: 'collection',
+                text: 'Export Current View',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+
+            }
+        ],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            ['10 rows', '25 rows', '50 rows', '100 Rows', 'Show all']
+        ],
+        initComplete: function (settings, json ) {
+
+               var btn_html = '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_genre_modal" style="margin-bottom:23px;">Add Genre</button>'
+
+            $('.dt-buttons').append(btn_html);
+            },
+    });
+
+	loadGenres();
+
+	$('#add_genre_form').submit(function(){
+        event.preventDefault();
+        addGenre();
+      });
+</script>
+{% endblock %}

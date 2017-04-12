@@ -37,7 +37,7 @@ class TrackViewset(viewsets.ModelViewSet):
 		if serializer.is_valid():
 			track_instance = serializer.create(serializer.data)
 			return Response(GetTrackListSerializer(track_instance).data)
-		return Response(serializer.errors)
+		return Response(serializer.errors, status=500)
 
 	def list(self, request, *args, **kwargs):
 		queryset = self.get_queryset()
@@ -78,7 +78,7 @@ class UpdateRetrieveTrack(viewsets.ModelViewSet):
 			error = {
 				'error' :'Track does not exist please enter correct track id.'
 			}
-			return Response(error)
+			return Response(error, status=500)
 
 	def update(self, request, *args, **kwargs):
 		track_id = kwargs.get('track_id')
@@ -93,14 +93,14 @@ class UpdateRetrieveTrack(viewsets.ModelViewSet):
 			error = {
 				'error' :'Track does not exist please enter correct book id.'
 			}
-			return Response(error)
-		return Response(serializer.errors)
+			return Response(error, status=500)
+		return Response(serializer.errors, status=500)
 
 
 class GenreViewSet(viewsets.ModelViewSet):
 	model = Genres
 	serializer_class = GetGenreListSerializer
-	queryset = Genres.objects.all()
+	# queryset = Genres.objects.all()
 
 	def get_serializer_class(self):
 		serializer_action_classes = {
@@ -111,15 +111,23 @@ class GenreViewSet(viewsets.ModelViewSet):
 		    return serializer_action_classes.get(self.action, self.serializer_class)
 		return self.serializer_class
 
+	def get_queryset(self):
+		queryset = self.model.objects.all()
+		title = self.request.query_params.get('title')
+		if title:
+			queryset = queryset.filter(genre_name = title)
+			return queryset
+		return queryset
+
 	def create(self, request, *args, **kwargs):
 		serializer = self.get_serializer(data=request.data)
 		if serializer.is_valid():
 			genre_instance = serializer.create(serializer.data)
 			return Response(GetGenreListSerializer(genre_instance).data)
-		return Response(serializer.errors)
+		return Response(serializer.errors, status=500)
 
 	def list(self, request, *args, **kwargs):
-		queryset = self.queryset
+		queryset = self.get_queryset()
 		page = self.paginate_queryset(queryset)
 		if page is not None:
 			serialize = self.get_serializer(queryset, many=True)
@@ -156,7 +164,7 @@ class UpdateRetrieveGenre(viewsets.ModelViewSet):
 			error = {
 				'error' :'Genre does not exist please enter correct genre id.'
 			}
-			return Response(error)
+			return Response(error, status=500)
 
 	def update(self, request, *args, **kwargs):
 		genre_id = kwargs.get('genre_id')
@@ -172,5 +180,5 @@ class UpdateRetrieveGenre(viewsets.ModelViewSet):
 			error = {
 				'error' :'Genre does not exist please enter correct genre id.'
 			}
-			return Response(error)
-		return Response(serializer.errors)
+			return Response(error, status=500)
+		return Response(serializer.errors, status=500)

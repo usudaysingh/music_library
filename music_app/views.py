@@ -10,3 +10,9 @@ class HomeView(View):
 
 	def get(self, request, *args, **kwargs):
 		return render(request, self.template)
+
+class GenreView(View):
+	template = 'genre.html'
+
+	def get(self, request, *args, **kwargs):
+		return render(request, self.template)

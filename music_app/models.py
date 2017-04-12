@@ -5,7 +5,7 @@ from django.db import models
 # Create your models here.
 
 class Genres(models.Model):
-	genre_name = models.CharField(max_length=100)
+	genre_name = models.CharField(max_length=100, unique=True)
 	genre_type = models.CharField(max_length=500)
 	genre_id = models.AutoField(primary_key=True)
 
