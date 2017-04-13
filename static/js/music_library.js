@@ -207,6 +207,9 @@ function emptyEditTrackForm(name, singer, rating){
     $('#edit_title').attr("placeholder", name);
     $('#edit_singer').attr("placeholder", singer);
     $('#edit_rating').attr("placeholder", rating);
+    $('#edit_track_name').html(name);
+    $('#edit_track_singer').html(singer);
+    $('#edit_track_rating').html(rating);
 }
 
 function update_track(track_id)
@@ -252,7 +255,6 @@ function update_track(track_id)
         success: function (responseData, textStatus, jqXHR) {
             emptyEditTrackForm(new_track_name, new_track_singer, new_track_rating);
             $('#edit_track_modal').modal('hide');
-            location.reload();
         },
         error: function (jqXHR, errorThrown) {
             alert(errorThrown);
