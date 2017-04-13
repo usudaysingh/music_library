@@ -61,7 +61,15 @@
 		                            id="singer" placeholder="Singer Name here"/>
 		                    </div>
 		                  </div>
-		                  <div class="form-group">
+		                   <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="load_genres" >Genres</label>
+		                    <div class="col-sm-10">
+		                        <select id="load_genres" class="form-control" onchange="check_genre()">
+		                        </select>
+		                    </div>
+		                  </div>
+		                  <div class="form-group" id="genre_name_block">
 		                  	<label class="col-sm-2 control-label"
 		                          for="genre_name" >Genre Name</label>
 		                    <div class="col-sm-10">
@@ -69,7 +77,7 @@
 		                            id="genre_name" placeholder="Genre Name here"/>
 		                    </div>
 		                  </div>
-		                  <div class="form-group">
+		                  <div class="form-group" id="genre_type_block">
 		                  	<label class="col-sm-2 control-label"
 		                          for="genre_type" >Genre Type</label>
 		                    <div class="col-sm-10">
@@ -116,14 +124,14 @@
             ['10 rows', '25 rows', '50 rows', '100 Rows', 'Show all']
         ],
         initComplete: function (settings, json ) {
-
-               var btn_html = '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_track_modal" style="margin-bottom:23px;">Add Track</button>'
+           var btn_html = '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_track_modal" style="margin-bottom:23px;">Add Track</button>'
 
             $('.dt-buttons').append(btn_html);
             },
     });
+	Load_genres();
 
-	Load_tracks()
+	Load_tracks();
 
 	$('#add_track_form').submit(function(){
         event.preventDefault();
@@ -135,6 +143,7 @@
         var song_name = $('#search_song').val()
 		table.search(song_name)
 		table.draw();
-      });
+    });
+
 </script>
 {% endblock %}

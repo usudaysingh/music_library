@@ -1,0 +1,87 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="home_page">
+	<div class="modal fade" id="edit_track_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <div class="modal-header">
+	                <button type="button" class="close" 
+	                   data-dismiss="modal">
+	                       <span aria-hidden="true">&times;</span>
+	                       <span class="sr-only">Close</span>
+	                </button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Add Track
+	                </h4>
+	            </div>
+            
+	            <!-- Modal Body -->
+	            <div class="modal-body">
+		                <form class="form-horizontal" role="form" id="edit_track_form">
+		                  <div class="form-group">
+		                    <label  class="col-sm-2 control-label"
+		                              for="edit_title">Title</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" 
+		                        id="edit_title" placeholder="{{track.track_name}}"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="edit_singer" >Singer</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="edit_singer" placeholder="{{track.singer}}"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="edit_rating" >Ratings</label>
+		                    <div class="col-sm-10">
+		                        <input type="number" min="1" max="5" class="form-control" id="edit_rating" placeholder="{{track.rating}}"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <div class="col-sm-offset-2 col-sm-10">
+		                      <button type="submit" class="btn btn-default">Add</button>
+		                    </div>
+		                  </div>
+		                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div><!-- /. Modal -->
+	<div style="position: absolute; width: 60%; margin-left: 20%; margin-top:10%;">
+		<table class="table">
+			<tr class="active">
+				<td>Track Name</td>
+				<td><label id="edit_track_name">{{track.track_name}}</label></td>
+				<td>Track Id</td>
+				<td>{{track.track_id}}</td>
+			</tr>
+			<tr class="active">
+				<td>Singer</td>
+				<td><label id="edit_track_singer">{{track.singer}}</label></td>
+				<td>Rating</td>
+				<td><label id="edit_track_rating">{{track.rating}}</label></td>
+			</tr>
+			<tr class="active">
+				<td>Genre Name</td>
+				<td><label>{{track.genres.genre_name}}</label></td>
+				<td>Genre Type</td>
+				<td><label>{{track.genres.genre_type}}</label></td>
+			</tr>
+		</table>
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit_track_modal">Edit Track</button>	
+	</div>
+</div>
+<script type="text/javascript">
+	$('#edit_track_form').submit(function(){
+        event.preventDefault();
+        update_track('{{track.track_id|safe}}');
+    });
+</script>
+{% endblock %}

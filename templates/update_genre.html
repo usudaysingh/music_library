@@ -1,0 +1,68 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="home_page">
+	<div class="modal fade" id="edit_genre_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <div class="modal-header">
+	                <button type="button" class="close" 
+	                   data-dismiss="modal">
+	                       <span aria-hidden="true">&times;</span>
+	                       <span class="sr-only">Close</span>
+	                </button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Add Track
+	                </h4>
+	            </div>
+            
+	            <!-- Modal Body -->
+	            <div class="modal-body">
+		                <form class="form-horizontal" role="form" id="edit_genre_form">
+		                  <div class="form-group">
+		                    <label  class="col-sm-2 control-label"
+		                              for="edit_genre_name">Genre Name</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" 
+		                        id="edit_genre_name" placeholder="{{genre.genre_name}}" value="{{genre.genre_name}}" />
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="edit_genre_type" >Genre Type</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="edit_genre_type" placeholder="{{genre.genre_type}}" value="{{genre.genre_type}}" />
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <div class="col-sm-offset-2 col-sm-10">
+		                      <button type="submit" class="btn btn-default">Add</button>
+		                    </div>
+		                  </div>
+		                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div><!-- /. Modal -->
+	<div style="position: absolute; width: 60%; margin-left: 20%; margin-top:10%;">
+		<table class="table">
+			<tr class="active">
+				<td>Genre Name</td>
+				<td><label id="label_genre_name">{{genre.genre_name}}</label></td>
+				<td>Genre Type</td>
+				<td><label id="label_genre_type">{{genre.genre_type}}</label></td>
+			</tr>
+		</table>
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit_genre_modal">Edit Genre</button>	
+	</div>
+</div>
+<script type="text/javascript">
+	$('#edit_genre_form').submit(function(){
+        event.preventDefault();
+        update_genre('{{genre.genre_id|safe}}');
+    });
+</script>
+{% endblock %}
