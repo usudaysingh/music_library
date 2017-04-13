@@ -252,6 +252,7 @@ function update_track(track_id)
         success: function (responseData, textStatus, jqXHR) {
             emptyEditTrackForm(new_track_name, new_track_singer, new_track_rating);
             $('#edit_track_modal').modal('hide');
+            location.reload();
         },
         error: function (jqXHR, errorThrown) {
             alert(errorThrown);
