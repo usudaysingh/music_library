@@ -95,7 +95,6 @@ function addTrack() {
     {
         var add_genre_id = $('#load_genres').val();
         var new_genre_values = get_genre_value(add_genre_id);
-        debugger;
         genre_name = new_genre_values.genre_name;
         genre_type = new_genre_values.genre_type;
     }
@@ -145,7 +144,7 @@ function loadGenres() {
         	{
         		$('#genre_table').dataTable().fnAddData([
                         genre_count++,
-                        '<a href="#">'+genres[i].genre_name+'</a>',
+                        '<a href="/music_app/update_genre/'+genres[i].genre_id+'">'+genres[i].genre_name+'</a>',
                         genres[i].genre_type
                     ]);
         	}
@@ -188,7 +187,7 @@ function addGenre(){
             success: function (responseData, textStatus, jqXHR) {
             	$('#genre_table').dataTable().fnAddData([
                     genre_count++,
-                    '<a href="#">'+responseData.genre_name+'</a>',
+                    '<a href="/music_app/update_genre/'+responseData.genre_id+'">'+responseData.genre_name+'</a>',
                     responseData.genre_type
                 ]);
                 $('#add_genre_modal').modal('hide'); 
