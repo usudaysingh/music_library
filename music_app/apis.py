@@ -5,7 +5,8 @@ from django.utils import timezone
 from rest_framework import viewsets
 from .models import Tracks, Genres
 from .serializers import GetTrackListSerializer,  CreateTrackSerializer, UpdateTrackSerializer,\
-	GetGenreListSerializer,  CreateGenreSerializer, UpdateGenreSerializer
+	GetGenreListSerializer,  CreateGenreSerializer, UpdateGenreSerializer, RetrieveTrackSerializer, \
+	CreateTrackMultipleGenreSerializer, GenreOperationTrackSerializer
 from rest_framework.response import Response
 from rest_framework import permissions
 from django.core.exceptions import PermissionDenied
@@ -33,7 +34,11 @@ class TrackViewset(viewsets.ModelViewSet):
 		return queryset
 
 	def create(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
+		if request.data['multiple_genres']:
+			serializer = CreateTrackMultipleGenreSerializer(data=request.data)
+		else:
+			serializer = self.get_serializer(data=request.data)
+		
 		if serializer.is_valid():
 			track_instance = serializer.create(serializer.data)
 			return Response(GetTrackListSerializer(track_instance).data)
@@ -56,11 +61,11 @@ class UpdateRetrieveTrack(viewsets.ModelViewSet):
 	'''
 
 	model = Tracks
-	serializer_class = GetTrackListSerializer
+	serializer_class = RetrieveTrackSerializer
 
 	def get_serializer_class(self):
 		serializer_action_classes = {
-		    'retrieve': GetTrackListSerializer,
+		    'retrieve': RetrieveTrackSerializer,
 		    'update': UpdateTrackSerializer,
 		}
 		if hasattr(self, 'action'):
@@ -181,4 +186,23 @@ class UpdateRetrieveGenre(viewsets.ModelViewSet):
 				'error' :'Genre does not exist please enter correct genre id.'
 			}
 			return Response(error, status=500)
+		return Response(serializer.errors, status=500)
+
+class EditTrackGenreViewset(viewsets.ModelViewSet):
+	serializer_class = GenreOperationTrackSerializer
+	model = Tracks
+	queryset = Tracks.objects.all()
+
+	def add_genre(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		if serializer.is_valid():
+			add_message = serializer.add_genre(serializer.data)
+			return Response(add_message, status=add_message.get('status'))
+		return Response(serializer.errors, status=500)
+
+	def delete_genre(self, request, *args, **kwargs):
+		serializer = self.get_serializer(data=request.data)
+		if serializer.is_valid():
+			delete_message = serializer.delete_genre(serializer.data)
+			return Response(delete_message, status=delete_message.get('status'))
 		return Response(serializer.errors, status=500)

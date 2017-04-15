@@ -14,7 +14,7 @@
 	                       <span class="sr-only">Close</span>
 	                </button>
 	                <h4 class="modal-title" id="myModalLabel">
-	                    Add Track
+	                    Update Track
 	                </h4>
 	            </div>
             
@@ -26,7 +26,7 @@
 		                              for="edit_title">Title</label>
 		                    <div class="col-sm-10">
 		                        <input type="text" class="form-control" 
-		                        id="edit_title" placeholder="{{track.track_name}}"/>
+		                        id="edit_title" value="{{track.track_name}}"/>
 		                    </div>
 		                  </div>
 		                  <div class="form-group">
@@ -34,14 +34,14 @@
 		                          for="edit_singer" >Singer</label>
 		                    <div class="col-sm-10">
 		                        <input type="text" class="form-control"
-		                            id="edit_singer" placeholder="{{track.singer}}"/>
+		                            id="edit_singer" value="{{track.singer}}"/>
 		                    </div>
 		                  </div>
 		                  <div class="form-group">
 		                  	<label class="col-sm-2 control-label"
 		                          for="edit_rating" >Ratings</label>
 		                    <div class="col-sm-10">
-		                        <input type="number" min="1" max="5" class="form-control" id="edit_rating" placeholder="{{track.rating}}"/>
+		                        <input type="number" min="1" max="5" class="form-control" id="edit_rating" value="{{track.rating}}"/>
 		                    </div>
 		                  </div>
 		                  <div class="form-group">
@@ -54,7 +54,45 @@
 			        </div>
 			    </div>
 			</div><!-- /. Modal -->
-	<div style="position: absolute; width: 60%; margin-left: 20%; margin-top:10%;">
+
+	<div class="modal fade" id="add_track_genre_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <!-- Modal Header -->
+	            <div class="modal-header">
+	                <button type="button" class="close" 
+	                   data-dismiss="modal">
+	                       <span aria-hidden="true">&times;</span>
+	                       <span class="sr-only">Close</span>
+	                </button>
+	                <h4 class="modal-title" id="myModalLabel">
+	                    Add Genre
+	                </h4>
+	            </div>
+            
+	            <!-- Modal Body -->
+	            <div class="modal-body">
+		                <form class="form-horizontal" role="form" id="add_track_genre_form">
+		                   <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="track_load_genres">Genres</label>
+		                    <div class="col-sm-10">
+		                        <select id="track_load_genres" class="form-control" multiple>
+		                        </select>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                    <div class="col-sm-offset-2 col-sm-10">
+		                      <button type="submit" class="btn btn-default">Add Genre</button>
+		                    </div>
+		                  </div>
+		                </form>
+			            </div>
+			        </div>
+			    </div>
+			</div><!-- /. Modal -->
+	<div style="position: absolute; width: 60%; margin-left: 20%; margin-top:5%;">
 		<table class="table">
 			<tr class="active">
 				<td>Track Name</td>
@@ -68,20 +106,74 @@
 				<td>Rating</td>
 				<td><label id="edit_track_rating">{{track.rating}}</label></td>
 			</tr>
-			<tr class="active">
-				<td>Genre Name</td>
-				<td><label>{{track.genres.genre_name}}</label></td>
-				<td>Genre Type</td>
-				<td><label>{{track.genres.genre_type}}</label></td>
-			</tr>
 		</table>
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#edit_track_modal">Edit Track</button>	
 	</div>
+
+	<div class="box" style="margin-top: 20%; position: absolute; margin-left: 20%; background-color: white; border-radius: 20px; padding: 10px;">
+            <div class="box-header with-border">
+              <h3 class="box-title">Genres</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+            <table id="track_genre_table" class="display compact" cellspacing="0" width="100%">
+                    <thead>
+	                    <tr>
+	                        <th>Genre Id</th>
+	                        <th>Genre Name</th>
+	                        <th>Genre Type</th>
+	                        <th>Action</th>
+	                    </tr>
+	                    </thead>
+	                    {% for genre in track.genres %}
+	                    <tr>
+	                        <th><a href="/music_app/update_genre/{{genre.genre_id}}">{{genre.genre_id}}</a></th>
+	                        <th>{{genre.genre_name}}</th>
+	                        <th>{{genre.genre_type}}</th>
+	                        <th><button onclick="delete_track_genre({{genre.genre_id}}, {{track.track_id}})">Delete Genre</button></th>
+	                    </tr>
+	                    {% endfor %}
+                </table>
+          </div>
+    </div>
 </div>
 <script type="text/javascript">
 	$('#edit_track_form').submit(function(){
         event.preventDefault();
         update_track('{{track.track_id|safe}}');
     });
+
+	$('#add_track_genre_form').submit(function(){
+		event.preventDefault();
+		track_add_genres('{{track.track_id|safe}}');
+	});
+
+    var table = $('#track_genre_table').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            'pageLength',
+            {
+                extend: 'colvis',
+                columns: ':not(:nth-child(1))'
+            },
+            {
+                extend: 'collection',
+                text: 'Export Current View',
+                buttons: ['copy', 'csv', 'excel', 'pdf', 'print']
+
+            }
+        ],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            ['10 rows', '25 rows', '50 rows', '100 Rows', 'Show all']
+        ],
+        initComplete: function (settings, json ) {
+           var btn_html = '<button type="button" class="btn btn-success" data-toggle="modal" data-target="#add_track_genre_modal" style="margin-bottom:23px;">Add Genre</button>'
+            $('.dt-buttons').append(btn_html);
+            },
+    });
+
+    Track_Load_genres();
+
 </script>
 {% endblock %}

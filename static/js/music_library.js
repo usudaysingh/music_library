@@ -13,7 +13,6 @@ function Load_tracks() {
                         count++,
                         '<a href="/music_app/update_track/'+tracks[i].track_id+'">'+tracks[i].track_name+'</a>',
                         tracks[i].singer,
-                        tracks[i].genres.genre_name,
                         tracks[i].rating
                     ]);
         	}
@@ -52,6 +51,10 @@ function emptyTrackForm(){
     $('#rating').val('');
     $('#genre_name').val('');
     $('#genre_type').val('');
+    $('#genre2_name').val('');
+    $('#genre2_type').val('');
+    $('#load_genres').val('0');
+    $('#manual_genre_block').css('display','block');
 }
 
 function get_genre_value(genre_id)
@@ -82,8 +85,11 @@ function addTrack() {
 	var rating = $('#rating').val();
 	var genre_name = $('#genre_name').val();
 	var genre_type = $('#genre_type').val();
+    var genre2_name = $('#genre2_name').val();
+    var genre2_type = $('#genre2_type').val();
+    var multiple_genre = $('#multiple').val();
 
-    if($('#load_genres').val() == '0')
+    if($('#load_genres').val().length == 1 && $('#load_genres').val()[0] == '0')
     {
         if(title.length == 0 || singer.length == 0 || rating.length == 0 || genre_name.length == 0 || genre_type.length == 0)
         {
@@ -91,23 +97,45 @@ function addTrack() {
             return 0;
         }
     }
+
+    if (($('#load_genres').val()[0] == '0' && $('#load_genres').val().length == 1) && (genre2_type.length == 0 || genre2_name.length == 0))
+    {
+        var pdata = {
+            "track_name": title,
+            "singer": singer,
+            "rating": rating,
+            "genres": [{
+                "genre_name": genre_name,
+                "genre_type": genre_type
+            } ],
+            "multiple_genres":false
+        }   
+    }
+    else if($('#load_genres').val().length > 1){
+        var pdata = {
+            "track_name": title,
+            "singer": singer,
+            "rating": rating,
+            "genres": $('#load_genres').val(),
+            "multiple_genres":true
+        }
+    }
     else
     {
-        var add_genre_id = $('#load_genres').val();
-        var new_genre_values = get_genre_value(add_genre_id);
-        genre_name = new_genre_values.genre_name;
-        genre_type = new_genre_values.genre_type;
+        var pdata = {
+            "track_name": title,
+            "singer": singer,
+            "rating": rating,
+            "genres": [{
+                "genre_name": genre_name,
+                "genre_type": genre_type
+            },{
+                "genre_name": genre2_name,
+                "genre_type": genre2_type
+            }],
+            "multiple_genres":false
+        }
     }
-
-	var pdata = {
-	    "track_name": title,
-	    "singer": singer,
-	    "rating": rating,
-	    "genres": {
-	        "genre_name": genre_name,
-	        "genre_type": genre_type
-	    }
-	}
 
 
 	$.ajax({
@@ -122,7 +150,6 @@ function addTrack() {
                     count++,
                     '<a href="/music_app/update_track/'+responseData.track_id+'">'+responseData.track_name+'</a>',
                     responseData.singer,
-                    responseData.genres.genre_name,
                     responseData.rating
                 ]);
                 $('#add_track_modal').modal('hide'); 
@@ -307,12 +334,85 @@ function check_genre()
 {
     if ($('#load_genres').val() == '0')
     {
-        $('#genre_name_block').css('display','block');
-        $('#genre_type_block').css('display','block');
+        $('#manual_genre_block').css('display','block');
     }
     else
     {
-        $('#genre_name_block').css('display','none');
-        $('#genre_type_block').css('display','none');
+        $('#manual_genre_block').css('display','none');
     }
+}
+
+function delete_track_genre(genre_id,track_id){
+    var delete_genre_data = {
+        "genre_id": [genre_id],
+        "track_id": String(track_id)
+    }
+
+    var table = $('#track_genre_table').DataTable();
+
+    $.ajax({
+        type: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(delete_genre_data),
+        url:'/music_app/delete_track_genre/',
+        success: function (responseData, textStatus, jqXHR) {
+
+            table.row($('tr:contains('+genre_id+')')).remove();
+            table.draw();
+            alert('Genre deleted')
+        },
+        error: function (jqXHR, errorThrown) {
+            alert(errorThrown);
+        } //error ends
+    }); //request ends
+}
+
+function Track_Load_genres()
+{
+    var html = '';
+    $.ajax({
+        type: 'GET',
+        url:'/music_app/genres/?limit=10000',
+        success: function (responseData, textStatus, jqXHR) {
+            genres = responseData.results;
+            for (var i=0; i<genres.length; i++){
+                temp = '<option value="'+genres[i].genre_id+'">' + genres[i].genre_name + '</option>';
+                html += temp;
+              }
+            $('#track_load_genres').html(html);
+        },
+        error:function (jqXHR, textStatus, errorThrown){
+         alert(errorThrown);
+        }
+    });
+}
+
+function track_add_genres(track_id){
+    if($('#track_load_genres').val() == '0')
+    {
+        alert('Please select genre');
+        return 0;
+    }
+
+    var add_genre_data = {
+        "genre_id": $('#track_load_genres').val(),
+        "track_id": String(track_id)
+    };
+
+    $.ajax({
+        type: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: JSON.stringify(add_genre_data),
+        url:'/music_app/add_track_genre/',
+        success: function (responseData, textStatus, jqXHR) {
+            location.reload();
+        },
+        error: function (jqXHR, errorThrown) {
+            alert(errorThrown);
+        } //error ends
+    }); //request ends   
 }
