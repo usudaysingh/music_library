@@ -298,8 +298,8 @@ function emptyEditGenreForm(new_genre_name, new_genre_type)
 
 function update_genre(genre_id)
 {
-    var new_genre_name = $('#edit_genre_type').val();
-    var new_genre_type = $('#edit_genre_name').val();
+    var new_genre_name = $('#edit_genre_name').val();
+    var new_genre_type = $('#edit_genre_type').val();
 
     var update_genre_data = {
         "genre_name": new_genre_name,
