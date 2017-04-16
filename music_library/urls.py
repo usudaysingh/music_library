@@ -14,9 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from django.views.generic import TemplateView
 from django.contrib import admin
+
+class HomePageView(TemplateView):
+    template_name = 'angular/index.html'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^music_app/', include('music_app.urls', namespace='music-app')),
+    url(r'^music_app/(.*)$', HomePageView.as_view(), name='music-app'),
 ]
