@@ -1,21 +1,91 @@
-<div style="background-color: white; border-radius: 20px; width: 60%; min-height: 100px; opacity: 0.7; position: absolute; margin-left:20%; margin-top:5%; padding: 2%;">
+<div class="modal fade" id="updateTrack" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 >Update Track</h4>
+                </div>
+
+                <form name="form" class="form-horizontal" novalidate>
+                    <div class="modal-body">
+                       	<div class="form-group">
+		                    <label  class="col-sm-2 control-label"
+		                              for="edit_title">Title</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" 
+		                        ng-model="edit_title" name="title" placeholder="{[{track.track_name}]}" required />
+		                        <span ng-show="form.$submitted && !edit_title">
+	                              <small ng-show="form.title.$error.required" class="error-text">Track Name can not be blank</small>
+	                            </span>
+		                    </div>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="edit_singer" >Singer</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            ng-model="edit_singer" name="edit_singer" placeholder="{[{track.singer}]}" required />
+		                        <span ng-show="form.$submitted && !edit_singer">
+	                              <small ng-show="form.edit_singer.$error.required" class="error-text">Singer can not be blank</small>
+	                            </span>
+		                    </div>
+		                </div>
+		                
+		                <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="edit_rating" >Ratings</label>
+		                    <div class="col-sm-10">
+		                        <input type="number" min="1" max="5" class="form-control" ng-model="edit_rating" placeholder="{[{track.rating}]}" name="rating" required />
+		                        <span ng-show="form.$submitted && !edit_rating">
+	                              <small ng-show="form.edit_rating.$error.required" class="error-text">Rating can not be blank</small>
+	                            </span>
+		                </div>
+		                  </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default waves-effect pull-right" ng-click="updateTrack(form)">Update</button>
+                        <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<div class="table_css">
 	<table class="table">
 		<tr>
-			<td><span class="label_name">Track Id</span></td>
-			<td>{[{track.track_id}]}</td>
-			<td><span class="label_name">Name</span></td>
-			<td>{[{track.track_name}]}</td>
+			<td>Track Id</td>
+			<td><span class="label_name">{[{track.track_id}]}</td>
+			<td>Name</span></td>
+			<td><span class="label_name">{[{track.track_name}]}</span></td>
 		</tr>
 		<tr>
-			<td><span class="label_name">Singer</span></td>
-			<td>{[{track.singer}]}</td>
-			<td><span class="label_name">Rating</span></td>
-			<td>{[{track.rating}]}</td>
+			<td>Singer</td>
+			<td><span class="label_name">{[{track.singer}]}</span></td>
+			<td>Rating</td>
+			<td><span class="label_name">{[{track.rating}]}</span></td>
 		</tr>
 		<tr>
-			<td>Genres</td>
-			<td><button>Add Genre</button></td>
+			<td><button class="btn btn-success" data-toggle="modal" data-target="#updateTrack">Update Track</button></td>
 		</tr>
-		
+	</table>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Genre Id</th>
+				<th>Genre Name</th>
+				<th>Genre Type</th>
+				<th>Action </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="genre in track_genres">
+				<td>{[{genre.genre_id}]}</td>
+				<td>{[{genre.genre_name}]}</td>
+				<td>{[{genre.genre_type}]}</td>
+				<td><button class="btn btn-danger" ng-click="deleteTrack(genre.genre_id)">Delete</button></td>
+			</tr>
+		</tbody>
 	</table>
 </div>

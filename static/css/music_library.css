@@ -10,3 +10,25 @@
 .label_name{
 	color: blue;
 }
+
+.table_css{
+	background-color: white; 
+	border-radius: 20px; 
+	width: 60%; 
+	min-height: 100px; 
+	opacity: 0.9; 
+	position: absolute; 
+	margin-left:20%; 
+	margin-top:5%; 
+	padding: 2%;
+}
+
+.table_box_css{
+	margin-top: 25%; 
+	position: absolute; 
+	margin-left: 20%; 
+	background-color: white; 
+	border-radius: 20px; 
+	padding: 2%
+	opacity:0.7;
+}

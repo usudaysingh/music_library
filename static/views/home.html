@@ -1,7 +1,8 @@
-	<div class="table-responsive" style="width: 70%; margin-left: 15%; margin-top:10%;">
+	<div class="table_css" >
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Track Id</th>
                         <th>Title</th>
                         <th>Singer</th>
                         <th>Ratings</th>
@@ -9,13 +10,15 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="track in tracks | itemsPerPage: trackPerPage" total-items="totalTracks" current-page="pagination.current">
-          				<td><a href="/music_app/update_track/{[{track.track_id}]}">{[{track.track_name}]}</a></td>
+          				<td><a href="/music_app/update_track/{[{track.track_id}]}">{[{track.track_id}]}</a></td>
+                        <td><a href="/music_app/update_track/{[{track.track_id}]}">{[{track.track_name}]}</a></td>
                         <td>{[{track.singer}]}</td>
                         <td>{[{track.rating}]}</td>
                     </tr>
                 </tbody>
             <table>
 	</div>
+
 
 	<div class="card-header">
             <dir-pagination-controls on-page-change="updateTracks(newPageNumber)"></dir-pagination-controls>

@@ -11,6 +11,9 @@
                 return $resource('/music_api/tracks/', {}, {
                     get: {
                         method: 'GET'
+                    },
+                    create:{
+                        method: 'POST'
                     }
                 });
             }
@@ -30,7 +33,29 @@
                         headers: {
                             'Content-Type': 'application/json'
                         },
-                        isArray: false
+                        params: {
+                            trackId: '@trackId'
+                        },
+                    }
+                });
+            }
+        ])
+
+        .factory('AddTrackGenreResource', ['$resource',
+            function($resource) {
+                return $resource('/music_api/add_track_genre/', {}, {
+                    add: {
+                        method: 'POST'
+                    }
+                });
+            }
+        ])
+
+        .factory('DeleteTrackGenreResource', ['$resource',
+            function($resource) {
+                return $resource('/music_api/delete_track_genre/', {}, {
+                    delete: {
+                        method: 'POST'
                     }
                 });
             }
