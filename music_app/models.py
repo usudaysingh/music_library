@@ -12,6 +12,6 @@ class Genres(models.Model):
 class Tracks(models.Model):
 	track_name = models.CharField(max_length=500)
 	track_id = models.AutoField(primary_key=True)
-	genres = models.ForeignKey(Genres, on_delete=models.CASCADE)
+	genres = models.ManyToManyField(Genres)
 	singer = models.CharField(max_length=500)
 	rating = models.IntegerField()

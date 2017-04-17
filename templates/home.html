@@ -19,7 +19,6 @@
                         <th>#</th>
                         <th>Title</th>
                         <th>Singer</th>
-                        <th>Genre</th>
                         <th>Rating</th>
                     </tr>
                     </thead>
@@ -65,11 +64,12 @@
 		                    <label class="col-sm-2 control-label"
 		                          for="load_genres" >Genres</label>
 		                    <div class="col-sm-10">
-		                        <select id="load_genres" class="form-control" onchange="check_genre()">
+		                        <select id="load_genres" class="form-control" onchange="check_genre()" multiple>
 		                        </select>
 		                    </div>
 		                  </div>
-		                  <div class="form-group" id="genre_name_block">
+		                  <div id="manual_genre_block">
+		                  <div class="form-group">
 		                  	<label class="col-sm-2 control-label"
 		                          for="genre_name" >Genre Name</label>
 		                    <div class="col-sm-10">
@@ -77,7 +77,7 @@
 		                            id="genre_name" placeholder="Genre Name here"/>
 		                    </div>
 		                  </div>
-		                  <div class="form-group" id="genre_type_block">
+		                  <div class="form-group">
 		                  	<label class="col-sm-2 control-label"
 		                          for="genre_type" >Genre Type</label>
 		                    <div class="col-sm-10">
@@ -85,6 +85,23 @@
 		                            id="genre_type" placeholder="Genre Type here"/>
 		                    </div>
 		                  </div>
+		                  <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="genre2_name" >Genre2 Name</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="genre2_name" placeholder="Genre Name here"/>
+		                    </div>
+		                  </div>
+		                  <div class="form-group">
+		                  	<label class="col-sm-2 control-label"
+		                          for="genre2_type" >Genre2 Type</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            id="genre2_type" placeholder="Genre Type here"/>
+		                    </div>
+		                  </div>
+		                  </div><!--manual genre block -->
 		                  <div class="form-group">
 		                  	<label class="col-sm-2 control-label"
 		                          for="rating" >Ratings</label>
