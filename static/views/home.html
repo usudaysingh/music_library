@@ -2,7 +2,6 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Track ID</th>
                         <th>Title</th>
                         <th>Singer</th>
                         <th>Ratings</th>
@@ -10,9 +9,8 @@
                 </thead>
                 <tbody>
                     <tr dir-paginate="track in tracks | itemsPerPage: trackPerPage" total-items="totalTracks" current-page="pagination.current">
-          				<td><a href="/new/pickup/bpu/{[{track.track_id}]}">{[{track.track_id}]}</a></td>
-          				<td>{[{track.singer}]}</td>
-                        <td>{[{track.title}]}</td>
+          				<td><a href="/music_app/update_track/{[{track.track_id}]}">{[{track.track_name}]}</a></td>
+                        <td>{[{track.singer}]}</td>
                         <td>{[{track.rating}]}</td>
                     </tr>
                 </tbody>
@@ -20,5 +18,5 @@
 	</div>
 
 	<div class="card-header">
-            <dir-pagination-controls on-page-change="getTracks(newPageNumber)"></dir-pagination-controls>
+            <dir-pagination-controls on-page-change="updateTracks(newPageNumber)"></dir-pagination-controls>
     </div>

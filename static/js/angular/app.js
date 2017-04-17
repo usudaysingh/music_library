@@ -28,6 +28,10 @@
             $resourceProvider.defaults.stripTrailingSlashes = false;
 
             $routeProvider.
+            when('/music_app/update_track/:track_id', {
+                templateUrl: partials_dir + '/update_track.html',
+                controller: 'UpdateTrackCtrl'
+            }).
             when('/music_app/', {
                 templateUrl: partials_dir + '/home.html',
                 controller: 'HomeCtrl'
@@ -35,10 +39,6 @@
             when('/music_app/genres/', {
                 templateUrl: partials_dir + '/genres.html',
                 controller: 'GenreCtrl'
-            }).
-            when('/music_app/update_track/:track_id', {
-                templateUrl: partials_dir + '/update_track.html',
-                controller: 'HomeCtrl'
             }).
             when('/music_app/update_genre/:genre_id', {
                 templateUrl: partials_dir + '/update_genre.html',

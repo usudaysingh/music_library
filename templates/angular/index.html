@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="{{STATIC_URL}}css/music_library.css" />
 </head>
 <body ng-app="musicApp" ng-controller="HomeCtrl">
-    <div ng-view>    
+    <div class="home_page" ng-view>    
     </div>
 
     <!-- Javascript Libraries -->
@@ -17,6 +17,7 @@
     <script src="{{ STATIC_URL }}js/angular/dirPagination.js"></script>
     <script src="{{ STATIC_URL }}js/angular/app.js"></script>
     <script src="{{ STATIC_URL }}js/services/services.js"></script>
+    <script src="{{ STATIC_URL }}js/controllers/update_track_controller.js"></script>
     <script src="{{ STATIC_URL }}js/controllers/home_controller.js"></script>
     <script src="{{ STATIC_URL }}js/controllers/genre_controller.js"></script>
 </body>

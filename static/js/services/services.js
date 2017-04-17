@@ -18,9 +18,12 @@
 
         .factory('TrackRetrieveResource', ['$resource',
             function($resource) {
-                return $resource('/music_api/tracks/:trackId/', {}, {
+                return $resource('/music_api/tracks/:trackId', {}, {
                     get: {
-                        method: 'GET'
+                        method: 'GET',
+                        params: {
+                            trackId: '@trackId'
+                        },
                     },
                     update: {
                         method: 'PUT',

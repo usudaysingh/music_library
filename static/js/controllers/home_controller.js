@@ -23,6 +23,10 @@ angular.module('musicApp')
 		    	return true;
 		    }
 		    getTracks(1);
+
+		    $scope.updateTracks = function(newPage) {
+		        getTracks(newPage);
+		    };
             
     }]);
 
