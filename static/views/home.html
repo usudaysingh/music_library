@@ -1,1 +1,24 @@
-{[{message}]}
+	<div class="table-responsive" style="width: 70%; margin-left: 15%; margin-top:10%;">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Track ID</th>
+                        <th>Title</th>
+                        <th>Singer</th>
+                        <th>Ratings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="track in tracks | itemsPerPage: trackPerPage" total-items="totalTracks" current-page="pagination.current">
+          				<td><a href="/new/pickup/bpu/{[{track.track_id}]}">{[{track.track_id}]}</a></td>
+          				<td>{[{track.singer}]}</td>
+                        <td>{[{track.title}]}</td>
+                        <td>{[{track.rating}]}</td>
+                    </tr>
+                </tbody>
+            <table>
+	</div>
+
+	<div class="card-header">
+            <dir-pagination-controls on-page-change="getTracks(newPageNumber)"></dir-pagination-controls>
+    </div>

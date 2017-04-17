@@ -5,12 +5,28 @@
     
         musicApp
 
-        // Order resources
+        // Track resources
         .factory('TrackResource', ['$resource',
             function($resource) {
-                return $resource('/music_app/tracks/', {}, {
+                return $resource('/music_api/tracks/', {}, {
                     get: {
-                        method: 'GET',
+                        method: 'GET'
+                    }
+                });
+            }
+        ])
+
+        .factory('TrackRetrieveResource', ['$resource',
+            function($resource) {
+                return $resource('/music_api/tracks/:trackId/', {}, {
+                    get: {
+                        method: 'GET'
+                    },
+                    update: {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
                         isArray: false
                     }
                 });

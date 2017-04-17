@@ -5,8 +5,10 @@
 
     var musicApp = angular.module('musicApp', [
             'ngRoute',
-            'ngResource'
+            'ngResource',
+            'angularUtils.directives.dirPagination'
     ]);
+
 
     musicApp
         .config([
@@ -34,9 +36,17 @@
                 templateUrl: partials_dir + '/genres.html',
                 controller: 'GenreCtrl'
             }).
+            when('/music_app/update_track/:track_id', {
+                templateUrl: partials_dir + '/update_track.html',
+                controller: 'HomeCtrl'
+            }).
+            when('/music_app/update_genre/:genre_id', {
+                templateUrl: partials_dir + '/update_genre.html',
+                controller: 'GenreCtrl'
+            }).
             otherwise({
                 controller : function(){
-                    window.location.replace('/music_app');
+                    window.location.replace('/music_app/');
                 },
                 template : '<div></div>'
 
@@ -50,25 +60,7 @@
               requireBase: false
             });
 
-            $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-            $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+            // $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+            // $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
         }]);
-
-        // .run(['$rootScope', '$location', '$cookieStore', '$http',
-        //     function ($rootScope, $location, $cookieStore, $http) {
-        //     // keep user logged in after page refresh
-        //     $rootScope.globals = $cookieStore.get('globals') || {};
-            
-        //     if ($rootScope.globals.currentUser) {
-        //         $http.defaults.headers.common['Authorization'] = 'Token ' + $rootScope.globals.currentUser.token; // jshint ignore:line
-        //     }
-
-        //     $rootScope.$on('$locationChangeStart', function (event, next, current) {
-        //         // redirect to login page if not logged in
-        //         if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-        //             $location.path('/login');
-        //         }
-        //     });
-        // }]);
-
 })(angular);

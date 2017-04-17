@@ -22,5 +22,6 @@ class HomePageView(TemplateView):
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^music_api/', include('music_app.urls', namespace='musicapi')),
     url(r'^music_app/(.*)$', HomePageView.as_view(), name='music-app'),
 ]
