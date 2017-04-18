@@ -19,6 +19,20 @@
             }
         ])
 
+        // Track resources
+        .factory('genreResource', ['$resource',
+            function($resource) {
+                return $resource('/music_api/genres/', {}, {
+                    get: {
+                        method: 'GET'
+                    },
+                    create:{
+                        method: 'POST'
+                    }
+                });
+            }
+        ])
+
         .factory('TrackRetrieveResource', ['$resource',
             function($resource) {
                 return $resource('/music_api/tracks/:trackId', {}, {

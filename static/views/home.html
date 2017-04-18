@@ -1,4 +1,84 @@
-	<div class="table_css" >
+	<div class="modal fade" id="add_track_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" 
+                       data-dismiss="modal">
+                           <span aria-hidden="true">&times;</span>
+                           <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        Add Track
+                    </h4>
+                </div>
+            
+                <!-- Modal Body -->
+                <div class="modal-body">
+                        <form class="form-horizontal" name="add_track_form" novalidate>
+                          <div class="form-group">
+                            <label  class="col-sm-2 control-label"
+                                      for="title">Title</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" 
+                                ng-model="title" name="title" placeholder="Track name here" required />
+                            </div>
+                            <span ng-show="form.$submitted && !title">
+                                  <small ng-show="form.title.$error.required" class="error-text">Track Name can not be blank</small>
+                            </span>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                  for="singer" >Singer</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"
+                                    ng-model="singer" name="singer" placeholder="Singer Name here" required />
+                            </div>
+                            <span ng-show="form.$submitted && !singer">
+                                  <small ng-show="form.singer.$error.required" class="error-text">Singer can not be blank</small>
+                            </span>
+                          </div>
+                           <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                  for="load_genres" >Genres</label>
+                            <div class="col-sm-10">
+                                <select ng-model="load_genres" class="form-control"  name="load_genres" multiple required>
+                                <option ng-repeat = "genre in genres" value="{[{genre.genre_id}]}">{[{genre.genre_name}]}</option>
+                                </select>
+                            </div>
+                            <span ng-show="form.$submitted && !load_genres">
+                                  <small ng-show="form.load_genres.$error.required" class="error-text">Select at least one genre</small>
+                            </span>
+                          </div>                    
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                  for="rating" >Ratings</label>
+                            <div class="col-sm-10">
+                                <input type="number" min="1" max="5" class="form-control" ng-model="rating" name="rating" placeholder="Enter Ratings here"/>
+                            </div>
+                            <span ng-show="form.$submitted && !rating">
+                                  <small ng-show="form.rating.$error.required" class="error-text">Rating field cannot be blank</small>
+                            </span>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                              <button type="submit" class="btn btn-success pull-right" ng-click="addTrack(add_track_form)">Add</button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /. Modal -->
+
+    <div class="table_css" >
+            <button class="btn btn-success" data-toggle="modal" data-target="#add_track_modal">Add Track</button>
+            <form name="form" class="pull-right" ng-submit="searchTrack(form)">
+                <input type="text" name="search_song" ng-model="searchTrackName" placeholder="search song" />
+                <input type="submit" name="submit" style="display: none;" />
+            </form>
             <table class="table table-hover">
                 <thead>
                     <tr>
