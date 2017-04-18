@@ -1,1 +1,81 @@
-{[{message}]}
+	<div class="modal fade" id="add_genre_modal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" 
+                       data-dismiss="modal">
+                           <span aria-hidden="true">&times;</span>
+                           <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="genreModalLabel">
+                        Add Genre
+                    </h4>
+                </div>
+            
+                <!-- Modal Body -->
+                <div class="modal-body">
+                        <form class="form-horizontal" name="add_genre_form" novalidate>
+                          <div class="form-group">
+                            <label  class="col-sm-2 control-label"
+                                      for="title">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" 
+                                ng-model="genre_name" name="genre_name" placeholder="Genre name here" required />
+                            </div>
+                            <span ng-show="form.$submitted && !genre_name">
+                                  <small ng-show="form.genre_name.$error.required" class="error-text">Genre Name can not be blank</small>
+                            </span>
+                          </div>
+                          <div class="form-group">
+                            <label class="col-sm-2 control-label"
+                                  for="genre_type" >Type</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control"
+                                    ng-model="genre_type" name="genre_type" placeholder="Genre Type here" required />
+                            </div>
+                            <span ng-show="form.$submitted && !genre_type">
+                                  <small ng-show="form.genre_type.$error.required" class="error-text">Genre Type can not be blank</small>
+                            </span>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                              <button type="submit" class="btn btn-success pull-right" ng-click="addGenre(add_genre_form)">Add</button>
+                            </div>
+                          </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /. Modal -->
+
+    <div class="table_css" >
+            <button class="btn btn-success" data-toggle="modal" data-target="#add_genre_modal">Add Genre</button>
+            <form name="form" class="pull-right" ng-submit="searchGenre(form)">
+                <input type="text" name="search_song" ng-model="searchGenreName" placeholder="Search genre" />
+                <input type="submit" name="submit" style="display: none;" />
+            </form>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Genre Id</th>
+                        <th>Name</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr dir-paginate="genre in genres | itemsPerPage: genrePerPage" total-items="totalGenres" current-page="pagination.current">
+          				<td><a href="/music_app/update_genre/{[{genre.genre_id}]}">{[{genre.genre_id}]}</a></td>
+                        <td><a href="/music_app/update_genre/{[{genre.genre_id}]}">{[{genre.genre_name}]}</a></td>
+                        <td>{[{genre.genre_type}]}</td>
+                    </tr>
+                </tbody>
+            <table>
+	</div>
+
+
+	<div class="card-header">
+            <dir-pagination-controls on-page-change="updateTracks(newPageNumber)"></dir-pagination-controls>
+    </div>

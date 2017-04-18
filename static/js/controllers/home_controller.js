@@ -6,9 +6,7 @@ angular.module('musicApp')
     .controller('HomeCtrl',
         ['$scope','TrackResource','genreResource',
         function($scope,TrackResource,genreResource) {
-            $scope.message = "yeah baby it is correct message."
-
-            $scope.trackPerPage = 5;
+            $scope.trackPerPage = 10;
 
             function loadGenres(){
             	genreResource.get({
@@ -58,7 +56,7 @@ angular.module('musicApp')
             		"multiple_genres":true
 		    	}, function(resp) {
 	                console.log(resp);
-	                $('#add_track_modal').modal('hide'); 
+	                $('#add_track_modal').modal('hide');
 	            },function(error) {
 	            	console.log(error);
 				});
