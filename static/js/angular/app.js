@@ -42,7 +42,7 @@
             }).
             when('/music_app/update_genre/:genre_id', {
                 templateUrl: partials_dir + '/update_genre.html',
-                controller: 'GenreCtrl'
+                controller: 'UpdateGenreCtrl'
             }).
             otherwise({
                 controller : function(){

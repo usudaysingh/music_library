@@ -55,6 +55,28 @@
             }
         ])
 
+        .factory('GenreRetrieveResource', ['$resource',
+            function($resource) {
+                return $resource('/music_api/genres/:genreId', {}, {
+                    get: {
+                        method: 'GET',
+                        params: {
+                            genreId: '@genreId'
+                        },
+                    },
+                    update: {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        params: {
+                            genreId: '@genreId'
+                        },
+                    }
+                });
+            }
+        ])
+
         .factory('AddTrackGenreResource', ['$resource',
             function($resource) {
                 return $resource('/music_api/add_track_genre/', {}, {

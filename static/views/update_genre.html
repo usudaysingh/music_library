@@ -1,1 +1,62 @@
-<h1>genre</h1>
+<div class="modal fade" id="updateGenre" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 >Update Genre</h4>
+                </div>
+
+                <form name="form" class="form-horizontal" novalidate>
+                    <div class="modal-body">
+                       	<div class="form-group">
+		                    <label  class="col-sm-2 control-label"
+		                              for="edit_genre_name">Name</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control" 
+		                        ng-model="edit_genre_name" name="edit_genre_name" placeholder="{[{genre.genre_name}]}" required />
+		                        <span ng-show="form.$submitted && !edit_genre_name">
+	                              <small ng-show="form.edit_genre_name.$error.required" class="error-text">Genre Name can not be blank</small>
+	                            </span>
+		                    </div>
+		                </div>
+		                
+		                <div class="form-group">
+		                    <label class="col-sm-2 control-label"
+		                          for="edit_genre_type" >Type</label>
+		                    <div class="col-sm-10">
+		                        <input type="text" class="form-control"
+		                            ng-model="edit_genre_type" name="edit_genre_type" placeholder="{[{genre.genre_type}]}" required />
+		                        <span ng-show="form.$submitted && !edit_genre_type">
+	                              <small ng-show="form.edit_genre_type.$error.required" class="error-text">Genre Type can not be blank</small>
+	                            </span>
+		                    </div>
+		                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-default waves-effect pull-right" ng-click="updateGenre(form)">Update</button>
+                        <button type="button" class="btn btn-link" data-dismiss="modal" ng-click="resetGenreForm(form)">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<div class="table_css">
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Genre Id</th>
+				<th>Genre Name</th>
+				<th>Genre Type</th>
+				<th>Action </th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{[{genre_id}]}</td>
+				<td>{[{genre.genre_name}]}</td>
+				<td>{[{genre.genre_type}]}</td>
+				<td><button class="btn btn-success" data-toggle="modal" data-target="#updateGenre">Update</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>

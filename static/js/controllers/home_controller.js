@@ -45,6 +45,14 @@ angular.module('musicApp')
 		        getTracks(newPage);
 		    };
 
+		    $scope.resetTrackForm = function(form){
+		    	$scope.form.$submitted=false;
+		    	$scope.title = '';
+	            $scope.singer = '';
+	            $scope.rating = null;
+	            $scope.genres = [];
+		    }
+
 		    $scope.addTrack = function(form){
 		    	$scope.form.$submitted=true;
 		    	if ($scope.form.$valid) {
@@ -55,8 +63,8 @@ angular.module('musicApp')
             		"genres": $scope.load_genres,
             		"multiple_genres":true
 		    	}, function(resp) {
-	                console.log(resp);
 	                $('#add_track_modal').modal('hide');
+	                $scope.resetTrackForm(form);
 	            },function(error) {
 	            	console.log(error);
 				});

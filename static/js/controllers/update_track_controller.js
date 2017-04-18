@@ -7,12 +7,12 @@ angular.module('musicApp')
         ['$scope','TrackRetrieveResource','AddTrackGenreResource','DeleteTrackGenreResource',
         function($scope,TrackRetrieveResource,AddTrackGenreResource,DeleteTrackGenreResource) {
 
+        	$scope.track_id = window.location.pathname.split('/')[3]
 
             function getTrack() {
 		    	TrackRetrieveResource.get({
-		    		'trackId': window.location.pathname.split('/')[3]
+		    		'trackId': $scope.track_id
 		    	}, function(resp) {
-		    		console.log(resp)
 	                $scope.track = resp;
 	                $scope.track_genres = resp.genres;
 	            });
@@ -21,21 +21,25 @@ angular.module('musicApp')
 
 		    getTrack();
 
+		    $scope.resetUpdateTrackForm = function(form){
+		    		$scope.form.$submitted=false;
+		    		$scope.edit_title = '';
+	                $scope.edit_singer = '';
+	                $scope.edit_rating = '';
+		    }
+
 		    $scope.updateTrack = function(form) {
 		    	$scope.form.$submitted=true;
 		       	if ($scope.form.$valid) {
 		       		TrackRetrieveResource.update({
-		    			"trackId": window.location.pathname.split('/')[3],
+		    			"trackId": $scope.track_id,
 		    			"track_name": $scope.edit_title,
         				"singer": $scope.edit_singer,
         				"rating": $scope.edit_rating	
 		    	}, function(resp) {
 	                $scope.track = resp;
-	                $scope.form.$submitted=false;
-	                $('#updateTrack').modal('hide'); 
-	                $scope.edit_title = '';
-	                $scope.edit_singer = '';
-	                $scope.edit_rating = '';
+	                $('#updateTrack').modal('hide');
+	                $scope.resetUpdateTrackForm(form); 
 	            },
 	            function(error) {
 	            	// TODO: Show error messgae here.
@@ -44,17 +48,36 @@ angular.module('musicApp')
 		       	}
 		    };
 
+		    // $scope.myCartItems.push(item);
+
 		    $scope.deleteTrack = function(genre_id){
 		    	DeleteTrackGenreResource.delete({
-		    			"track_id": window.location.pathname.split('/')[3],
+		    			"track_id": $scope.track_id,
 		    			"genre_id": [genre_id],	
 		    	}, function(resp) {
+		    		location.reload();
 	                console.log(resp);
-	                debugger;
 	            },
 	            function(error) {
-	            	// TODO: Show error messgae here.
+	            	console.log(error);
 				});
+		    }
+
+		    $scope.addGenre = function(genre_id){
+		    	$scope.form.$submitted=true;
+		       	if ($scope.form.$valid) {
+			    	AddTrackGenreResource.add({
+			    			"track_id": $scope.track_id,
+			    			"genre_id": $scope.genre_ids,	
+			    	}, function(resp) {
+		                location.reload();
+		            },
+		            function(error) {
+		            	var kl = error.data.invalid_genres[0];
+		            	error = angular.toJson(kl);
+		            	alert(error);
+					});
+			    }//valid
 		    }
             
     }]);
