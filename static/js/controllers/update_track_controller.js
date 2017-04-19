@@ -4,8 +4,8 @@
 angular.module('musicApp')
 
     .controller('UpdateTrackCtrl',
-        ['$scope','TrackRetrieveResource','AddTrackGenreResource','DeleteTrackGenreResource',
-        function($scope,TrackRetrieveResource,AddTrackGenreResource,DeleteTrackGenreResource) {
+        ['$scope','TrackRetrieveResource','AddTrackGenreResource','DeleteTrackGenreResource','genreResource',
+        function($scope,TrackRetrieveResource,AddTrackGenreResource,DeleteTrackGenreResource,genreResource) {
 
         	$scope.track_id = window.location.pathname.split('/')[3]
 
@@ -20,6 +20,16 @@ angular.module('musicApp')
 		    }
 
 		    getTrack();
+
+		    function loadGenres(){
+            	genreResource.get({
+		    		'limit': 1000
+		    	}, function(resp) {
+	                $scope.genres = resp.results;
+	            });
+		    	return true;
+            }
+            loadGenres()
 
 		    $scope.resetUpdateTrackForm = function(form){
 		    		$scope.form.$submitted=false;
@@ -48,7 +58,25 @@ angular.module('musicApp')
 		       	}
 		    };
 
-		    // $scope.myCartItems.push(item);
+		    function Update_genre(valid_genres, action) {
+		    	for(var j =0; j < valid_genres.length; j++){
+			    	for (var i=0; i<$scope.genres.length; i++)
+					{
+						if(valid_genres[j] == $scope.genres[i].genre_id)
+						{
+							if (action == 'Add')
+							{
+								$scope.track_genres.push($scope.genres[i])
+							}
+							else
+							{
+								
+							}
+						}
+					}
+				}
+				$('#addGenre').modal('hide');
+		    }
 
 		    $scope.deleteTrack = function(genre_id){
 		    	DeleteTrackGenreResource.delete({
@@ -56,10 +84,13 @@ angular.module('musicApp')
 		    			"genre_id": [genre_id],	
 		    	}, function(resp) {
 		    		location.reload();
-	                console.log(resp);
+		    		Update_genre(resp.valid_genres, 'Remove');
 	            },
 	            function(error) {
-	            	console.log(error);
+	            	Update_genre(error.valid_genres, 'Remove');
+	            	console.log(error);var kl = error.data.invalid_genres[0];
+		            error = angular.toJson(kl);
+		            alert(error);
 				});
 		    }
 
@@ -70,9 +101,11 @@ angular.module('musicApp')
 			    			"track_id": $scope.track_id,
 			    			"genre_id": $scope.genre_ids,	
 			    	}, function(resp) {
-		                location.reload();
+			    		console.log($scope.genres);
+			    		Update_genre(resp.valid_genres, 'Add');
 		            },
 		            function(error) {
+		            	Update_genre(error.valid_genres, 'Add');
 		            	var kl = error.data.invalid_genres[0];
 		            	error = angular.toJson(kl);
 		            	alert(error);
