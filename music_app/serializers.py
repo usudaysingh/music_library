@@ -83,6 +83,7 @@ class GenreOperationTrackSerializer(serializers.Serializer):
 
 	def add_genre(self, validated_data):
 		validated_data['invalid_genres'] = []
+		validated_data['valid_genres'] = []
 		try:
 			Track = Tracks.objects.get(track_id = validated_data.get('track_id'))
 		except Tracks.DoesNotExist:
@@ -95,6 +96,7 @@ class GenreOperationTrackSerializer(serializers.Serializer):
 					validated_data['invalid_genres'].append({genre:'Genre is already present in the list.'})
 				else:
 					Track.genres.add(Genre)
+					validated_data['valid_genres'].append({genre:'Genre successfully added.'})
 			except Genres.DoesNotExist:
 				validated_data['invalid_genres'].append({genre:'Genre Does not exist please enter correct genre id.'})
 		
@@ -108,6 +110,7 @@ class GenreOperationTrackSerializer(serializers.Serializer):
 
 	def delete_genre(self, validated_data):
 		validated_data['invalid_genres'] = []
+		validated_data['valid_genres'] = []
 		try:
 			Track = Tracks.objects.get(track_id = validated_data.get('track_id'))
 		except Tracks.DoesNotExist:
@@ -118,6 +121,7 @@ class GenreOperationTrackSerializer(serializers.Serializer):
 				Genre = Genres.objects.get(genre_id = genre)
 				if Track.genres.filter(genre_id=genre).exists():
 					Track.genres.remove(Genre)
+					validated_data['valid_genres'].append({genre:'Genre successfully removed.'})
 				else:
 					validated_data['invalid_genres'].append({genre:'Genre Does not exist in this track.Please enter correct genre id.'})
 			except Genres.DoesNotExist:
