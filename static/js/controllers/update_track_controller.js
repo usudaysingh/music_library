@@ -59,6 +59,7 @@ angular.module('musicApp')
 		    };
 
 		    function Update_genre(valid_genres, action) {
+		    	$('#addGenre').modal('hide');
 		    	for(var j =0; j < valid_genres.length; j++){
 			    	for (var i=0; i<$scope.genres.length; i++)
 					{
@@ -75,7 +76,6 @@ angular.module('musicApp')
 						}
 					}
 				}
-				$('#addGenre').modal('hide');
 		    }
 
 		    $scope.deleteTrack = function(genre_id){
